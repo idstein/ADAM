@@ -1,6 +1,6 @@
 ## Synopsis
 
-The Advanced Driving Assistance on a Mobile is a solution to assit while driving with a commodity mobile device.
+The Advanced Driving Assistance on a Mobile is a solution to assist while driving with a commodity mobile device.
 
 
 At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
