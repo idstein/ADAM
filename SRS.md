@@ -43,7 +43,7 @@ Priority | high
 Preconditions | -
 Postconditions |User has been informed about any expected lane departure
 Primary Actor | User
-Secondary Actor(s) | Video stream
+Secondary Actor(s) | -
 Trigger | User starts system
 Main Scenario | 1.	User starts Application<br>2.	User selects lane departure warning mode<br>3.	System displays a warning whenever a lane departure is expected to happen<br>4.	User deselects lane departure warning mode or quits Application
 Extensions | 2a No video stream available<br>2b System displays missing video stream warning
@@ -57,7 +57,7 @@ Priority | high
 Preconditions | -
 Postconditions | User has been informed about any critical braking distances detected
 Primary Actor | User
-Secondary Actor(s) | Video stream
+Secondary Actor(s) | -
 Trigger | User starts system
 Main Scenario | 1.	User starts Application<br>2.	User selects critical braking distance warning mode<br>3.	System displays a warning whenever the braking distance to a vehicle upfront gets critical<br>4.	User deselects critical braking distance warning mode or quits Application
 Extensions | 2a No video stream available<br>2b System displays missing video stream warning
@@ -71,7 +71,7 @@ Priority | middle
 Preconditions | -
 Postconditions | User has been informed about any street signs detected
 Primary Actor | User
-Secondary Actor(s) | Video stream
+Secondary Actor(s) | -
 Trigger | User starts system
 Main Scenario | 1.	User starts Application<br>2.	User selects Street Sign Information mode<br>3.	System displays detected street signs and their speed information<br>4.	User deselects Street Sign Information mode or quits Application
 Extensions | 2a No video stream available<br>2b System displays missing video stream warning
@@ -84,8 +84,8 @@ Name/Summary | Get video footage
 Priority | middle
 Preconditions | -
 Postconditions | If incident has been marked, video has been saved
-Primary Actor | User
-Secondary Actor(s) | Video Stream
+Primary Actor | Video stream
+Secondary Actor(s) | -
 Trigger | User starts system
 Main Scenario | 1.	User starts Application<br>2.	User starts Recording<br>3.	System shows record mode and incident button<br>4.	(opt.) User marks incident<br>5.	(opt.) Video footage is made anonymous permanently saved and success is displayed<br>6.	User stops Recording or quits Application
 Extensions | 3a No Video stream available or no disk space<br>3b System displays record failure
@@ -99,8 +99,92 @@ Priority | low
 Preconditions | -
 Postconditions | User has been informed about any braking vehicles in front
 Primary Actor | User
-Secondary Actor(s) | Video stream
+Secondary Actor(s) | -
 Trigger | User starts system
 Main Scenario | 1.	User starts Application<br>2.	User selects critical braking distance warning mode<br>3.	System displays a warning whenever a vehicle’s braking lights in front are illuminated<br>4.	User deselects critical braking distance warning mode or quits Application
 Extensions | 2a No video stream available<br>2b System displays missing video stream warning
+Open Issues | -
+
+Element | Content
+------- | -------
+Use Case ID | W6
+Name/Summary | Street speed signs recognition
+Priority | middle
+Preconditions | Video stream is available
+Postconditions | Street signs in front of the device have been recognised and matched
+Primary Actor | Video processor
+Secondary Actor(s) | -
+Trigger | New video footage
+Main Scenario | 1.	Recognise any street sign in new footage<br>2.	Match recognised street sign to known sign database<br>3.	Get sign attributes (if available, f.ex. speed limit)
+Extensions | 2a If sign cannot be matched get still image of recognised sign
+Open Issues | -
+
+Element | Content
+------- | -------
+Use Case ID | W7
+Name/Summary | Driving direction recognition
+Priority | high
+Preconditions | Video stream is available
+Postconditions | Driving direction correspondent to recognised lanes is known
+Primary Actor | Video processor
+Secondary Actor(s) | -
+Trigger | New video footage
+Main Scenario | 1.	Match current with previous video frames and extrapolate driving direction
+Extensions | 1a If no previous footage is available (or too old), no calculation is possible
+Open Issues | -
+
+Element | Content
+------- | -------
+Use Case ID | W8
+Name/Summary | Lane recognition
+Priority | middle
+Preconditions | Video stream is available
+Postconditions | Lanes in front of the device have been recognised
+Primary Actor | Video processor
+Secondary Actor(s) | -
+Trigger | New video footage
+Main Scenario | 1.	Recognise lanes in current frame<br>2.	Match recognised lanes to previously recognised lanes
+Extensions | 2a If no previous footage is available (or too old), no matching is possible
+Open Issues | -
+
+Element | Content
+------- | -------
+Use Case ID | W9
+Name/Summary | Show video footage
+Priority | middle
+Preconditions | -
+Postconditions | Selected video footage has been shown
+Primary Actor | User
+Secondary Actor(s) | -
+Trigger | New video footage
+Main Scenario | 1.	User starts Application<br>2.	User starts Recording<br>3.	System shows record mode and incident button<br>4.	(opt.) User marks incident<br>5.	(opt.) Video footage is made anonymous permanently saved and success is displayed<br>6.	User searches for saved video<br>7.	Video footage is shown<br>8.	User stops Recording or quits Application
+Extensions | 3a No Video stream available or no disk space<br>3b System displays record failure
+Open Issues | -
+
+Element | Content
+------- | -------
+Use Case ID | W10
+Name/Summary | Driving speed recognition
+Priority | middle
+Preconditions | Video stream data is available
+Postconditions | Driving speed of device (vehicle) is known
+Primary Actor | -
+Secondary Actor(s) | -
+Trigger | New video footage
+Main Scenario | 1.	Match current with previous video frames and extrapolate driving direction
+Extensions | 1a If no previous footage is available (or too old), no calculation is possible
+Open Issues | -
+
+Element | Content
+------- | -------
+Use Case ID | W11
+Name/Summary | Vehicle brake light recognition
+Priority | middle
+Preconditions | Video stream is available
+Postconditions | Brake lights of any recognised vehicles have been detected
+Primary Actor | Video processor
+Secondary Actor(s) | -
+Trigger | New video footage
+Main Scenario | 1.	Recognise vehicles from video footage<br>2.	(opt.) Match recognised vehicles with already known vehicles<br>3.	Recognise illuminated brake lights on each vehicle
+Extensions | -
 Open Issues | -
