@@ -33,9 +33,11 @@ This system operates within city/overland traffic boundaries.
 
 ## Use Cases
 
+See the [Use Case Diagram](https://github.com/idstein/ADAM/blob/master/ADAM%20Use%20Case%20Diagram.pdf)
+
 Element | Content
 ------- | -------
-Use Case ID |	W1
+Use Case ID | W1
 Name/Summary | Warning of lane departure
 Priority | high
 Preconditions | -
@@ -43,79 +45,62 @@ Postconditions |User has been informed about any expected lane departure
 Primary Actor | User
 Secondary Actor(s) | Video stream
 Trigger | User starts system
-Main Scenario | 1.	User starts Application
-2.	User selects lane departure warning mode
-3.	System displays a warning whenever a lane departure is expected to happen
-4.	User deselects lane departure warning mode or quits Application
-Extensions | 2a No video stream available
-2b System displays missing video stream warning
+Main Scenario | 1.	User starts Application<br>2.	User selects lane departure warning mode<br>3.	System displays a warning whenever a lane departure is expected to happen<br>4.	User deselects lane departure warning mode or quits Application
+Extensions | 2a No video stream available<br>2b System displays missing video stream warning
 Open Issues | -
 
+Element | Content
+------- | -------
+Use Case ID | W2
+Name/Summary | Warning of critical braking distance
+Priority | high
+Preconditions | -
+Postconditions | User has been informed about any critical braking distances detected
+Primary Actor | User
+Secondary Actor(s) | Video stream
+Trigger | User starts system
+Main Scenario | 1.	User starts Application<br>2.	User selects critical braking distance warning mode<br>3.	System displays a warning whenever the braking distance to a vehicle upfront gets critical<br>4.	User deselects critical braking distance warning mode or quits Application
+Extensions | 2a No video stream available<br>2b System displays missing video stream warning
+Open Issues | -
 
-Use Case ID	W2
-Name/Summary	Warning of critical braking distance
-Priority	high
-Preconditions	-
-Postconditions	User has been informed about any critical braking distances detected
-Primary Actor	User
-Secondary Actor(s)	Video stream
-Trigger	User starts system
-Main Scenario	1.	User starts Application
-2.	User selects critical braking distance warning mode
-3.	System displays a warning whenever the braking distance to a vehicle upfront gets critical
-4.	User deselects critical braking distance warning mode or quits Application
-Extensions	2a No video stream available
-2b System displays missing video stream warning
-Open Issues	-
+Element | Content
+------- | -------
+Use Case ID | W3
+Name/Summary | Information of street signs
+Priority | middle
+Preconditions | -
+Postconditions | User has been informed about any street signs detected
+Primary Actor | User
+Secondary Actor(s) | Video stream
+Trigger | User starts system
+Main Scenario | 1.	User starts Application<br>2.	User selects Street Sign Information mode<br>3.	System displays detected street signs and their speed information<br>4.	User deselects Street Sign Information mode or quits Application
+Extensions | 2a No video stream available<br>2b System displays missing video stream warning
+Open Issues | -
 
-Use Case ID	W3
-Name/Summary	Information of street signs
-Priority	middle
-Preconditions	-
-Postconditions	User has been informed about any street signs detected
-Primary Actor	User
-Secondary Actor(s)	Video stream
-Trigger	User starts system
-Main Scenario	1.	User starts Application
-2.	User selects Street Sign Information mode
-3.	System displays detected street signs and their speed information
-4.	User deselects Street Sign Information mode or quits Application
-Extensions	2a No video stream available
-2b System displays missing video stream warning
-Open Issues	-
+Element | Content
+------- | -------
+Use Case ID | W4
+Name/Summary | Get video footage
+Priority | middle
+Preconditions | -
+Postconditions | If incident has been marked, video has been saved
+Primary Actor | User
+Secondary Actor(s) | Video Stream
+Trigger | User starts system
+Main Scenario | 1.	User starts Application<br>2.	User starts Recording<br>3.	System shows record mode and incident button<br>4.	(opt.) User marks incident<br>5.	(opt.) Video footage is made anonymous permanently saved and success is displayed<br>6.	User stops Recording or quits Application
+Extensions | 3a No Video stream available or no disk space<br>3b System displays record failure
+Open Issues | -
 
-Use Case ID	W4
-Name/Summary	Get video footage
-Priority	middle
-Preconditions	-
-Postconditions	If incident has been marked, video has been saved
-Primary Actor	User
-Secondary Actor(s)	Video Stream
-Trigger	User starts system
-Main Scenario	1.	User starts Application
-2.	User starts Recording
-3.	System shows record mode and incident button
-4.	(opt.) User marks incident
-5.	(opt.) Video footage is made anonymous permanently saved and success is displayed
-6.	User stops Recording or quits Application
-Extensions	3a No Video stream available or no disk space
-3b System displays record failure
-Open Issues	-
-
-Use Case ID	W5
-Name/Summary	Warning of braking vehicles
-Priority	low
-Preconditions	-
-Postconditions	User has been informed about any braking vehicles in front
-Primary Actor	User
-Secondary Actor(s)	Video stream
-Trigger	User starts system
-Main Scenario	1.	User starts Application
-2.	User selects critical braking distance warning mode
-3.	System displays a warning whenever a vehicle’s braking lights in front are illuminated
-4.	User deselects critical braking distance warning mode or quits Application
-Extensions	2a No video stream available
-2b System displays missing video stream warning
-Open Issues	-
-
- 
+Element | Content
+------- | -------
+Use Case ID | W5
+Name/Summary | Warning of braking vehicles
+Priority | low
+Preconditions | -
+Postconditions | User has been informed about any braking vehicles in front
+Primary Actor | User
+Secondary Actor(s) | Video stream
+Trigger | User starts system
+Main Scenario | 1.	User starts Application<br>2.	User selects critical braking distance warning mode<br>3.	System displays a warning whenever a vehicle’s braking lights in front are illuminated<br>4.	User deselects critical braking distance warning mode or quits Application
+Extensions | 2a No video stream available<br>2b System displays missing video stream warning
+Open Issues | -
