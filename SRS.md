@@ -86,9 +86,9 @@ Preconditions | -
 Postconditions | If incident has been marked, video has been saved
 Primary Actor | Video stream
 Secondary Actor(s) | -
-Trigger | User starts system
-Main Scenario | 1.	User starts Application<br>2.	User starts Recording<br>3.	System shows record mode and incident button<br>4.	(opt.) User marks incident<br>5.	(opt.) Video footage is made anonymous permanently saved and success is displayed<br>6.	User stops Recording or quits Application
-Extensions | 3a No Video stream available or no disk space<br>3b System displays record failure
+Trigger | New video footage
+Main Scenario | 1.	"too old" video footage is deleted<br>2.	New video footage is saved in temporary storing location
+Extensions | -
 Open Issues | -
 
 Element | Content
