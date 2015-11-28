@@ -3,6 +3,6 @@ android/build/intermediates/dex-cache/cache.xml
 local.properties
 .idea
 .DS_Store
-*/build
-*/captures
+*build/
+*captures/
 *.iml
