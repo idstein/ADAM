@@ -8,27 +8,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:keepScreenOn="true"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/dashcam_java_surface_view"
-        opencv:show_fps="true"
-        opencv:camera_id="any" />
-
-    <!-- This FrameLayout insets its children based on system windows using
-        android:fitsSystemWindows. -->
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:layout_gravity="center">
-
-        <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay" android:orientation="horizontal"
-            tools:ignore="UselessParent">
-
-            <Button android:id="@+id/dummy_button" style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1" android:text="@string/dummy_button" />
-
-        </LinearLayout>
-    </FrameLayout>
+        opencv:show_fps="false"
+        opencv:camera_id="0" />
 </FrameLayout>
