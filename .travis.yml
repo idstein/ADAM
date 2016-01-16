@@ -11,6 +11,14 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+before_script:
+  # Install Android NDK 10e
+  # Note: There is now a difference between Target architecture and Platform architecture. What SHOULD they be?
+  - ARCH=$(uname -m)
+  - FILE="android-ndk-r10e-linux-${ARCH}.tar.bz2"
+  - wget http://dl.google.com/android/ndk/${FILE}
+  - 7z x ${FILE}
+  - export ANDROID_NDK_HOME=$PWD/android-ndk-r10e
 script:
     - cd android
     - gradle test
