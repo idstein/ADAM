@@ -20,4 +20,11 @@ before_script:
   - chmod a+x ${FILE}
   - ./${FILE} > /dev/null
   - export ANDROID_NDK_HOME=$PWD/android-ndk-r${REVISION}
-script: TERM=dumb gradle test
+script: TERM=dumb gradle assemble test
+deploy:
+  provider: releases
+    api_key: "****"
+    file: "/mobile/build/outputs/apk/mobile-debug.apk"
+    skip_cleanup: true
+    on:
+      tags: true
