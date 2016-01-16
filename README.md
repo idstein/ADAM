@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/idstein/ADAM.svg?token=QTWdMaqXyCvwHbkPxMwB&branch=master)](https://travis-ci.com/idstein/ADAM)
+
 ## Synopsis
 
 The Advanced Driving Assistance on a Mobile is a solution to assist while driving with a commodity mobile device.
