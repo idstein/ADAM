@@ -54,7 +54,7 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
     private boolean isRightHorizontal;
 
     public StreetViewActivity() {
-        edgeBitmap = Bitmap.createBitmap(0, 0, Bitmap.Config.RGB_565);
+        edgeBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
     }
 
     @Override
@@ -133,6 +133,7 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
     public void onCameraViewStarted(int width, int height) {
         this.width = width;
         this.height = height;
+
         matRgba = new Mat(height, width, CvType.CV_8UC4);
         matGray = new Mat(height, width, CvType.CV_8UC1);
         matEdges = new Mat(height, width, CvType.CV_8UC1);
