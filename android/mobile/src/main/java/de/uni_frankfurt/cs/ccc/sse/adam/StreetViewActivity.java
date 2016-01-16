@@ -18,7 +18,7 @@ import org.opencv.core.Mat;
  */
 public class StreetViewActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
     private static final String TAG = "StreetViewActivity";
-    private final Bitmap edgeBitmap;
+    private Bitmap edgeBitmap;
     private CameraBridgeViewBase mDashcamView;
     /**
      * Load OpenCV Manager
@@ -52,10 +52,6 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
     private int maxLaneY;
     private boolean isLeftHorizontal;
     private boolean isRightHorizontal;
-
-    public StreetViewActivity() {
-        edgeBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +133,7 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
         matRgba = new Mat(height, width, CvType.CV_8UC4);
         matGray = new Mat(height, width, CvType.CV_8UC1);
         matEdges = new Mat(height, width, CvType.CV_8UC1);
-        edgeBitmap.reconfigure(width, height, Bitmap.Config.RGB_565);
+        edgeBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 
         //leftLane = new Line(0, height, width, 0);
         //rightLane = new Line(width, height, 0, 0);
@@ -152,6 +148,7 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
 
         isLeftHorizontal = true;
         isRightHorizontal = true;
+        mDashcamView.enableFpsMeter();
     }
 
     @Override
