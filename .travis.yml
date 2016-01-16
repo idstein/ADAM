@@ -1,14 +1,25 @@
+language: android
 android: 
   components: 
     - build-tools-23.0.1
     - android-23
-language: android
+    - extra-android-m2repository
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+before_script:
+  # Install Android NDK 10e
+  # Note: There is now a difference between Target architecture and Platform architecture. What SHOULD they be?
+  - REVISION="10e"
+  - ARCH=$(uname -m)
+  - FILE="android-ndk-r${REVISION}-linux-${ARCH}.bin"
+  - wget http://dl.google.com/android/ndk/${FILE}
+  - chmod a+x ${FILE}
+  - ./${FILE} > /dev/null
+  - export ANDROID_NDK_HOME=$PWD/android-ndk-r${REVISION}
 script:
     - cd android
     - gradle test
