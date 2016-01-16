@@ -20,6 +20,4 @@ before_script:
   - chmod a+x ${FILE}
   - ./${FILE} > /dev/null
   - export ANDROID_NDK_HOME=$PWD/android-ndk-r${REVISION}
-script:
-    - cd android
-    - gradle test
+script: TERM=dumb gradle test
