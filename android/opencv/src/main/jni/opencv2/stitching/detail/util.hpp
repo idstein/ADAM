@@ -44,7 +44,7 @@
 #define __OPENCV_STITCHING_UTIL_HPP__
 
 #include <list>
-#include "../opencv2/core.hpp"
+#include "opencv2/core.hpp"
 
 #ifndef ENABLE_LOG
 #define ENABLE_LOG 0

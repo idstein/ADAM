@@ -44,7 +44,7 @@
 #ifndef __OPENCV_OBJDETECT_C_H__
 #define __OPENCV_OBJDETECT_C_H__
 
-#include "../opencv2/core/core_c.h"
+#include "opencv2/core/core_c.h"
 
 #ifdef __cplusplus
 #include <deque>

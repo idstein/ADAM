@@ -30,7 +30,7 @@
 #import <Accelerate/Accelerate.h>
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/ImageIO.h>
-#include "../opencv2/core.hpp"
+#include "opencv2/core.hpp"
 
 //! @addtogroup videoio_ios
 //! @{
@@ -71,6 +71,7 @@
 @property (nonatomic, readonly) BOOL captureSessionLoaded;
 
 @property (nonatomic, assign) int defaultFPS;
+@property (nonatomic, readonly) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
 @property (nonatomic, assign) AVCaptureDevicePosition defaultAVCaptureDevicePosition;
 @property (nonatomic, assign) AVCaptureVideoOrientation defaultAVCaptureVideoOrientation;
 @property (nonatomic, assign) BOOL useAVCaptureVideoPreviewLayer;
@@ -145,6 +146,7 @@
 - (void)layoutPreviewLayer;
 - (void)saveVideo;
 - (NSURL *)videoFileURL;
+- (NSString *)videoFileString;
 
 
 @end

@@ -44,7 +44,7 @@
 #ifndef __OPENCV_OBJDETECT_HPP__
 #define __OPENCV_OBJDETECT_HPP__
 
-#include "../opencv2/core.hpp"
+#include "opencv2/core.hpp"
 
 /**
 @defgroup objdetect Object Detection
@@ -261,7 +261,7 @@ public:
 
     @note
        -   (Python) A face detection example using cascade classifiers can be found at
-            opencv_source_code/samples/python2/facedetect.py
+            opencv_source_code/samples/python/facedetect.py
     */
     CV_WRAP void detectMultiScale( InputArray image,
                           CV_OUT std::vector<Rect>& objects,
@@ -457,10 +457,10 @@ public:
 
 }
 
-#include "../opencv2/objdetect/detection_based_tracker.hpp"
+#include "opencv2/objdetect/detection_based_tracker.hpp"
 
 #ifndef DISABLE_OPENCV_24_COMPATIBILITY
-#include "../opencv2/objdetect/objdetect_c.h"
+#include "opencv2/objdetect/objdetect_c.h"
 #endif
 
 #endif

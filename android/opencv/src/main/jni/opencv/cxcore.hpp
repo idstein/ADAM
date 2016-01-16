@@ -48,6 +48,6 @@
 //#endif
 
 #include "cxcore.h"
-#include "../opencv2/core.hpp"
+#include "opencv2/core.hpp"
 
 #endif

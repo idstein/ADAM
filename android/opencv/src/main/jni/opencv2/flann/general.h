@@ -31,7 +31,7 @@
 #ifndef OPENCV_FLANN_GENERAL_H_
 #define OPENCV_FLANN_GENERAL_H_
 
-#include "../opencv2/core.hpp"
+#include "opencv2/core.hpp"
 
 namespace cvflann
 {

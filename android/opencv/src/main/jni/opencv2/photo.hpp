@@ -43,8 +43,8 @@
 #ifndef __OPENCV_PHOTO_HPP__
 #define __OPENCV_PHOTO_HPP__
 
-#include "../opencv2/core.hpp"
-#include "../opencv2/imgproc.hpp"
+#include "opencv2/core.hpp"
+#include "opencv2/imgproc.hpp"
 
 /**
 @defgroup photo Computational Photography
@@ -107,7 +107,7 @@ objects from still images or video. See <http://en.wikipedia.org/wiki/Inpainting
    -   An example using the inpainting technique can be found at
         opencv_source_code/samples/cpp/inpaint.cpp
     -   (Python) An example using the inpainting technique can be found at
-        opencv_source_code/samples/python2/inpaint.py
+        opencv_source_code/samples/python/inpaint.py
  */
 CV_EXPORTS_W void inpaint( InputArray src, InputArray inpaintMask,
         OutputArray dst, double inpaintRadius, int flags );
@@ -864,7 +864,7 @@ CV_EXPORTS_W void stylization(InputArray src, OutputArray dst, float sigma_s = 6
 } // cv
 
 #ifndef DISABLE_OPENCV_24_COMPATIBILITY
-#include "../opencv2/photo/photo_c.h"
+#include "opencv2/photo/photo_c.h"
 #endif
 
 #endif

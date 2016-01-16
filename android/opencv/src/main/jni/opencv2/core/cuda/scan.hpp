@@ -43,10 +43,10 @@
 #ifndef __OPENCV_CUDA_SCAN_HPP__
 #define __OPENCV_CUDA_SCAN_HPP__
 
-#include "../opencv2/core/cuda/common.hpp"
-#include "../opencv2/core/cuda/utility.hpp"
-#include "../opencv2/core/cuda/warp.hpp"
-#include "../opencv2/core/cuda/warp_shuffle.hpp"
+#include "opencv2/core/cuda/common.hpp"
+#include "opencv2/core/cuda/utility.hpp"
+#include "opencv2/core/cuda/warp.hpp"
+#include "opencv2/core/cuda/warp_shuffle.hpp"
 
 /** @file
  * @deprecated Use @ref cudev instead.

@@ -43,9 +43,9 @@
 #ifndef _OPENCV_FLANN_HPP_
 #define _OPENCV_FLANN_HPP_
 
-#include "../opencv2/core.hpp"
-#include "../opencv2/flann/miniflann.hpp"
-#include "../opencv2/flann/flann_base.hpp"
+#include "opencv2/core.hpp"
+#include "opencv2/flann/miniflann.hpp"
+#include "opencv2/flann/flann_base.hpp"
 
 /**
 @defgroup flann Clustering and Search in Multi-Dimensional Spaces

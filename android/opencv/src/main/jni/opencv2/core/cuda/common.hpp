@@ -44,9 +44,9 @@
 #define __OPENCV_CUDA_COMMON_HPP__
 
 #include <cuda_runtime.h>
-#include "../opencv2/core/cuda_types.hpp"
-#include "../opencv2/core/cvdef.h"
-#include "../opencv2/core/base.hpp"
+#include "opencv2/core/cuda_types.hpp"
+#include "opencv2/core/cvdef.h"
+#include "opencv2/core/base.hpp"
 
 /** @file
  * @deprecated Use @ref cudev instead.

@@ -43,15 +43,15 @@
 #ifndef __OPENCV_STITCHING_STITCHER_HPP__
 #define __OPENCV_STITCHING_STITCHER_HPP__
 
-#include "../opencv2/core.hpp"
-#include "../opencv2/features2d.hpp"
-#include "../opencv2/stitching/warpers.hpp"
-#include "../opencv2/stitching/detail/matchers.hpp"
-#include "../opencv2/stitching/detail/motion_estimators.hpp"
-#include "../opencv2/stitching/detail/exposure_compensate.hpp"
-#include "../opencv2/stitching/detail/seam_finders.hpp"
-#include "../opencv2/stitching/detail/blenders.hpp"
-#include "../opencv2/stitching/detail/camera.hpp"
+#include "opencv2/core.hpp"
+#include "opencv2/features2d.hpp"
+#include "opencv2/stitching/warpers.hpp"
+#include "opencv2/stitching/detail/matchers.hpp"
+#include "opencv2/stitching/detail/motion_estimators.hpp"
+#include "opencv2/stitching/detail/exposure_compensate.hpp"
+#include "opencv2/stitching/detail/seam_finders.hpp"
+#include "opencv2/stitching/detail/blenders.hpp"
+#include "opencv2/stitching/detail/camera.hpp"
 
 /**
 @defgroup stitching Images stitching

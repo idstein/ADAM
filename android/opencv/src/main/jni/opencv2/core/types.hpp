@@ -52,9 +52,9 @@
 #include <cfloat>
 #include <vector>
 
-#include "../opencv2/core/cvdef.h"
-#include "../opencv2/core/cvstd.hpp"
-#include "../opencv2/core/matx.hpp"
+#include "opencv2/core/cvdef.h"
+#include "opencv2/core/cvstd.hpp"
+#include "opencv2/core/matx.hpp"
 
 namespace cv
 {

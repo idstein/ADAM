@@ -43,8 +43,8 @@
 #ifndef __OPENCV_SUPERRES_HPP__
 #define __OPENCV_SUPERRES_HPP__
 
-#include "../opencv2/core.hpp"
-#include "../opencv2/superres/optical_flow.hpp"
+#include "opencv2/core.hpp"
+#include "opencv2/superres/optical_flow.hpp"
 
 /**
   @defgroup superres Super Resolution

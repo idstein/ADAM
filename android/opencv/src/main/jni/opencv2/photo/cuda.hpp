@@ -43,7 +43,7 @@
 #ifndef __OPENCV_PHOTO_CUDA_HPP__
 #define __OPENCV_PHOTO_CUDA_HPP__
 
-#include "../opencv2/core/cuda.hpp"
+#include "opencv2/core/cuda.hpp"
 
 namespace cv { namespace cuda {
 

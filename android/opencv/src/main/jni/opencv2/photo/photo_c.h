@@ -43,7 +43,7 @@
 #ifndef __OPENCV_PHOTO_C_H__
 #define __OPENCV_PHOTO_C_H__
 
-#include "../opencv2/core/core_c.h"
+#include "opencv2/core/core_c.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -42,10 +42,10 @@
 #ifndef __OPENCV_HIGHGUI_H__
 #define __OPENCV_HIGHGUI_H__
 
-#include "../opencv2/core/core_c.h"
-#include "../opencv2/imgproc/imgproc_c.h"
-#include "../opencv2/imgcodecs/imgcodecs_c.h"
-#include "../opencv2/videoio/videoio_c.h"
+#include "opencv2/core/core_c.h"
+#include "opencv2/imgproc/imgproc_c.h"
+#include "opencv2/imgcodecs/imgcodecs_c.h"
+#include "opencv2/videoio/videoio_c.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -166,6 +166,7 @@ CVAPI(int) cvCreateTrackbar2( const char* trackbar_name, const char* window_name
 CVAPI(int) cvGetTrackbarPos( const char* trackbar_name, const char* window_name );
 CVAPI(void) cvSetTrackbarPos( const char* trackbar_name, const char* window_name, int pos );
 CVAPI(void) cvSetTrackbarMax(const char* trackbar_name, const char* window_name, int maxval);
+CVAPI(void) cvSetTrackbarMin(const char* trackbar_name, const char* window_name, int minval);
 
 enum
 {

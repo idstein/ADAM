@@ -43,10 +43,10 @@
 #ifndef __OPENCV_STITCHING_WARPERS_HPP__
 #define __OPENCV_STITCHING_WARPERS_HPP__
 
-#include "../opencv2/core.hpp"
-#include "../opencv2/core/cuda.hpp"
-#include "../opencv2/imgproc.hpp"
-#include "../opencv2/opencv_modules.hpp"
+#include "opencv2/core.hpp"
+#include "opencv2/core/cuda.hpp"
+#include "opencv2/imgproc.hpp"
+#include "opencv2/opencv_modules.hpp"
 
 namespace cv {
 namespace detail {

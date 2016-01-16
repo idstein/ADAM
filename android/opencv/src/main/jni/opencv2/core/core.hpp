@@ -45,4 +45,4 @@
 #error this is a compatibility header which should not be used inside the OpenCV library
 #endif
 
-#include "../core.hpp"
+#include "opencv2/core.hpp"

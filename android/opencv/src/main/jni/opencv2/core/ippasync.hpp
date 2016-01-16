@@ -47,7 +47,7 @@
 
 #ifdef HAVE_IPP_A
 
-#include "../opencv2/core.hpp"
+#include "opencv2/core.hpp"
 #include <ipp_async_op.h>
 #include <ipp_async_accel.h>
 

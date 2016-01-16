@@ -43,7 +43,7 @@
 #ifndef __OPENCV_VIDEOSTAB_FAST_MARCHING_INL_HPP__
 #define __OPENCV_VIDEOSTAB_FAST_MARCHING_INL_HPP__
 
-#include "../opencv2/videostab/fast_marching.hpp"
+#include "opencv2/videostab/fast_marching.hpp"
 
 namespace cv
 {

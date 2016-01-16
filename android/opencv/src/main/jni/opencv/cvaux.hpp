@@ -47,6 +47,6 @@
 //#endif
 
 #include "cvaux.h"
-#include "../opencv2/core/utility.hpp"
+#include "opencv2/core/utility.hpp"
 
 #endif

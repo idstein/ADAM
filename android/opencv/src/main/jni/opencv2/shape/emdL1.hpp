@@ -43,7 +43,7 @@
 #ifndef __OPENCV_EMD_L1_HPP__
 #define __OPENCV_EMD_L1_HPP__
 
-#include "../opencv2/core.hpp"
+#include "opencv2/core.hpp"
 
 namespace cv
 {
