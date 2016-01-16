@@ -1,7 +1,14 @@
 android: 
   components: 
     - build-tools-23.0.1
+    - android-23
 language: android
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 script:
     - cd android
     - gradle test
