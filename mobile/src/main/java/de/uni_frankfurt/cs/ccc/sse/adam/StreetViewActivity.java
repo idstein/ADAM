@@ -8,9 +8,16 @@ import android.util.Log;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+import static java.lang.Boolean.valueOf;
+import static org.opencv.android.LoaderCallbackInterface.INIT_FAILED;
+import static org.opencv.android.LoaderCallbackInterface.SUCCESS;
+import static org.opencv.android.OpenCVLoader.OPENCV_VERSION_3_1_0;
+import static org.opencv.android.OpenCVLoader.initAsync;
+import static org.opencv.android.OpenCVLoader.initDebug;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -73,18 +80,21 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, getApplicationContext(), loaderCallback);
+        if (valueOf(System.getProperty("UNIT_TEST", Boolean.TRUE.toString()))) {
+            loaderCallback.onManagerConnected(initDebug(false) ? SUCCESS : INIT_FAILED);
+        } else {
+            initAsync(OPENCV_VERSION_3_1_0, getApplicationContext(), loaderCallback);
+        }
     }
 
     /**
      * Image segmentation and edge detection
-     *
      */
     private void segmentation() {
 
         //Bottom half of landscape image
         //if (viewMode == VIEW_MODE_OPENCV_LINES_HORIZON || orientation == 1) {
-            matGray.submat(height / 2, height, 0, width).copyTo(matEdges.submat(height / 2, height, 0, width));
+        matGray.submat(height / 2, height, 0, width).copyTo(matEdges.submat(height / 2, height, 0, width));
         //}
         //Bottom third of portrait image
         //else {
@@ -104,7 +114,7 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
 
         /* Adaptive threshold
          **/
-        //Imgproc.adaptiveThreshold(matEdges, matEdges, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 3, -1.5);
+        Imgproc.adaptiveThreshold(matEdges, matEdges, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 3, -1.5);
 
         //Delete noise (little white points)
         //Imgproc.dilate(matEdges, matEdges, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2)));
@@ -148,7 +158,8 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
 
         isLeftHorizontal = true;
         isRightHorizontal = true;
-        mDashcamView.enableFpsMeter();
+        if (BuildConfig.DEBUG)
+            mDashcamView.enableFpsMeter();
     }
 
     @Override
@@ -158,6 +169,7 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
 
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
+
         return inputFrame.rgba();
     }
 }
