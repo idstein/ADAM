@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/idstein/ADAM.svg?token=QTWdMaqXyCvwHbkPxMwB&branch=master)](https://travis-ci.com/idstein/ADAM)
+
 ## Synopsis
 
 The Advanced Driving Assistance on a Mobile is a solution to assist while driving with a commodity mobile device.
@@ -51,15 +53,23 @@ A short description of the motivation behind the creation and maintenance of the
 
 ## Installation
 
-Provide code examples and explanations of how to get the project.
-
 ## API Reference
 
 Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
 
 ## Tests
 
-Describe and show how to run the tests with code examples.
+Tests run in local JVM require a local OpenCV installation. For OS X you can simply install OpenCV with brew:
+
+`brew install homebrew/science/opencv --with-contrib --with-cuda --with-ffmpeg --with-tbb --with-java --with-opengl --with-qt5`
+
+Run local tests with:
+
+`./gradlew test`
+
+Tests can also be executed on a real device or emulator using:
+
+`./graldew connectedAndroidTest`
 
 ## Contributors
 
