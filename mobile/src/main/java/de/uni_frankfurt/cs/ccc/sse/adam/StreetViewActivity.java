@@ -80,7 +80,7 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-        if (valueOf(System.getProperty("UNIT_TEST", Boolean.TRUE.toString()))) {
+        if (valueOf(System.getProperty("UNIT_TEST", Boolean.FALSE.toString()))) {
             loaderCallback.onManagerConnected(initDebug(false) ? SUCCESS : INIT_FAILED);
         } else {
             initAsync(OPENCV_VERSION_3_1_0, getApplicationContext(), loaderCallback);

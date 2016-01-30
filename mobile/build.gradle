@@ -11,6 +11,13 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    testOptions {
+        unitTests.all {
+            // All the usual Gradle options.
+            jvmArgs '-DUNIT_TEST=true'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
