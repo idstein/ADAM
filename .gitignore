@@ -1,0 +1,8 @@
+android/build/intermediates/dex-cache/cache.xml
+.gradle
+local.properties
+.idea
+.DS_Store
+*build/
+*captures/
+*.iml
