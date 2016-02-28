@@ -3,6 +3,10 @@ package de.uni_frankfurt.cs.ccc.sse.adam;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -16,6 +20,8 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import java.util.List;
+
 import static java.lang.Boolean.valueOf;
 import static org.opencv.android.LoaderCallbackInterface.INIT_FAILED;
 import static org.opencv.android.LoaderCallbackInterface.SUCCESS;
@@ -27,13 +33,16 @@ import static org.opencv.android.OpenCVLoader.initDebug;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class StreetViewActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2, IBaseGpsListener {
+public class StreetViewActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2, IBaseGpsListener, SensorEventListener {
     private static final String TAG = "StreetViewActivity";
     private Bitmap edgeBitmap;
     private CameraBridgeViewBase mDashcamView;
 
     private Location mLastLocation;
 
+    private SensorManager senSensorManager;
+    private Sensor senGyro;
+    private double currOrientation;
 
     /**
      * Load OpenCV Manager
@@ -68,6 +77,12 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
     private boolean isLeftHorizontal;
     private boolean isRightHorizontal;
 
+
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +95,13 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
 
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+        senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        senGyro = senSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+
+        senSensorManager.registerListener(this, senGyro, SensorManager.SENSOR_DELAY_NORMAL);
     }
+
 
     @Override
     protected void onDestroy() {
@@ -91,8 +112,10 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
     @Override
     protected void onResume() {
         super.onResume();
+        senSensorManager.registerListener(this, senGyro, SensorManager.SENSOR_DELAY_NORMAL);
+
         Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-        if (valueOf(System.getProperty("UNIT_TEST", Boolean.TRUE.toString()))) {
+        if (valueOf(System.getProperty("UNIT_TEST", Boolean.FALSE.toString()))) {
             loaderCallback.onManagerConnected(initDebug(false) ? SUCCESS : INIT_FAILED);
         } else {
             initAsync(OPENCV_VERSION_3_1_0, getApplicationContext(), loaderCallback);
@@ -187,13 +210,13 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d(TAG, "changed");
-        Log.d(TAG, location.hasSpeed()+" hasSpeed");
-        Log.d(TAG, location.getAccuracy() + " Accuracy");
-        Log.d(TAG, location.getAltitude() + " Altitude");
-        Log.d(TAG, location.hasBearing() + " hasBearing");
-        Log.d(TAG, location.getLatitude() + " Lat");
-        Log.d(TAG, location.getLongitude() + " Lng");
+        Log.d("Location", "changed");
+        Log.d("Location", location.hasSpeed()+" hasSpeed");
+        Log.d("Location", location.getAccuracy() + " Accuracy");
+        Log.d("Location", location.getAltitude() + " Altitude");
+        Log.d("Location", location.hasBearing() + " hasBearing");
+        Log.d("Location", location.getLatitude() + " Lat");
+        Log.d("Location", location.getLongitude() + " Lng");
         if(location != null)
         {
             CLocation myLocation = new CLocation(location);
@@ -203,34 +226,29 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
 
     @Override
     public void onProviderDisabled(String provider) {
-
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
     }
 
     @Override
     public void onGpsStatusChanged(int event) {
-
     }
 
     private void updateSpeed(CLocation pCurrentLocation) {
         //calcul manually speed
         double speed = 0;
         if (this.mLastLocation != null){
-             //
+
               double dist = distance_on_geoid(mLastLocation.getLatitude(), mLastLocation.getLongitude(), pCurrentLocation.getLatitude(), pCurrentLocation.getLongitude());
               double time_s = (mLastLocation.getTime() - pCurrentLocation.getTime()) / 1000.0;
               double speed_mps = dist / time_s;
               speed = Math.round(Math.abs((speed_mps * 3600.0) / 1000.0) * 100.0) / 100.0;
-  //
         }
 
 
@@ -277,5 +295,22 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
         return r * theta;
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        Log.d("SENSOR", event.sensor.getStringType());
+        switch (event.sensor.getType()){
+            case Sensor.TYPE_GYROSCOPE:
+                currOrientation = Math.toDegrees(event.values[1]);
+                TextView txtCurrentOrientation = (TextView) this.findViewById(R.id.txtCurrentOrientation);
+                double orientation = Math.round((currOrientation)* 100.0) / 100.0;
+                txtCurrentOrientation.setText("Orientation: "+orientation);
+            default:
+                return;
+        }
+    }
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }
