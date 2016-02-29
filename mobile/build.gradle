@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         applicationId "de.uni_frankfurt.cs.ccc.sse.adam"
@@ -29,6 +29,8 @@ android {
 dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.0'
+    testCompile files("${System.properties['java.home']}/lib/rt.jar")
+
 
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile project(':opencv')

@@ -1,16 +1,15 @@
 package de.uni_frankfurt.cs.ccc.sse.adam;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
+import org.opencv.video.BackgroundSubtractor;
+import org.opencv.video.Video;
 
 import static java.lang.Boolean.valueOf;
 import static org.opencv.android.LoaderCallbackInterface.INIT_FAILED;
@@ -25,8 +24,9 @@ import static org.opencv.android.OpenCVLoader.initDebug;
  */
 public class StreetViewActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
     private static final String TAG = "StreetViewActivity";
-    private Bitmap edgeBitmap;
     private CameraBridgeViewBase mDashcamView;
+
+    private Mat lanes;
     /**
      * Load OpenCV Manager
      */
@@ -37,6 +37,7 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
                 case LoaderCallbackInterface.SUCCESS: {
                     Log.i(TAG, "OpenCV library loaded successfully");
                     mDashcamView.enableView();
+                    lanes = new Mat();
                 }
                 break;
                 default: {
@@ -46,19 +47,6 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
             }
         }
     };
-    private int width;
-    private int height;
-    private Mat matRgba;
-    private Mat matGray;
-    private Mat matEdges;
-    private int midLaneX;
-    private int minLaneX;
-    private int maxLaneX;
-    private int minLeftLaneY;
-    private int minRightLaneY;
-    private int maxLaneY;
-    private boolean isLeftHorizontal;
-    private boolean isRightHorizontal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +56,7 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
 
         mDashcamView = (CameraBridgeViewBase) findViewById(R.id.dashcam_java_surface_view);
         mDashcamView.setCvCameraViewListener(this);
+        mDashcamView.setMaxFrameSize(640,480);
     }
 
     @Override
@@ -87,79 +76,11 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
         }
     }
 
-    /**
-     * Image segmentation and edge detection
-     */
-    private void segmentation() {
-
-        //Bottom half of landscape image
-        //if (viewMode == VIEW_MODE_OPENCV_LINES_HORIZON || orientation == 1) {
-        matGray.submat(height / 2, height, 0, width).copyTo(matEdges.submat(height / 2, height, 0, width));
-        //}
-        //Bottom third of portrait image
-        //else {
-        //    matGray.submat(0, height, (2 * width) / 3, width).copyTo(matEdges.submat(0, height, (2 * width) / 3, width));
-        //}
-
-        /* Gaussian blur
-         *
-         Imgproc.GaussianBlur(matEdges, matEdges, new Size(15,15), 0.5);
-         */
-
-        /* Static threshold
-         *
-         //Imgproc.threshold(matEdges, matEdges, 175, 255, Imgproc.THRESH_BINARY);
-         //Imgproc.threshold(matEdges, matEdges, 175, 255, Imgproc.THRESH_BINARY | Imgproc.THRESH_OTSU);
-         */
-
-        /* Adaptive threshold
-         **/
-        Imgproc.adaptiveThreshold(matEdges, matEdges, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 3, -1.5);
-
-        //Delete noise (little white points)
-        //Imgproc.dilate(matEdges, matEdges, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2)));
-        //Imgproc.erode(matEdges, matEdges, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2)));
-        //Imgproc.medianBlur(matEdges, matEdges, 3);
-
-
-        /* Canny edge detection
-         *
-        double mean = Core.mean(matGray).val[0];
-        Imgproc.Canny(matEdges, matEdges, 0.66 * mean, 1.33 * mean);
-        //Delete white edge at border of segmentation
-        if (orientation == 1) {
-            matEdges.rowRange(height / 2 - 1, height / 2 + 1).setTo(new Scalar(0));
-        } else {
-            matEdges.colRange(((2 * width) / 3) - 1, ((2 * width) / 3) + 1).setTo(new Scalar(0));
-        }
-        */
-    }
-
     @Override
     public void onCameraViewStarted(int width, int height) {
-        this.width = width;
-        this.height = height;
-
-        matRgba = new Mat(height, width, CvType.CV_8UC4);
-        matGray = new Mat(height, width, CvType.CV_8UC1);
-        matEdges = new Mat(height, width, CvType.CV_8UC1);
-        edgeBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-
-        //leftLane = new Line(0, height, width, 0);
-        //rightLane = new Line(width, height, 0, 0);
-
-        midLaneX = width / 2;
-        minLaneX = 0;
-        maxLaneX = width;
-
-        minLeftLaneY = 3 * height / 4;
-        minRightLaneY = 3 * height / 4;
-        maxLaneY = height;
-
-        isLeftHorizontal = true;
-        isRightHorizontal = true;
         if (BuildConfig.DEBUG)
             mDashcamView.enableFpsMeter();
+        backgroundSubtractor = Video.createBackgroundSubtractorMOG2();
     }
 
     @Override
@@ -167,9 +88,29 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
 
     }
 
+    BackgroundSubtractor backgroundSubtractor;
+
+    LaneDetectProcessor laneDetector = new LaneDetectProcessor();
+    int count = 0;
+
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
+        Mat input = inputFrame.rgba();
+        Mat roi = input.rowRange((int) (input.rows()*0.48), input.rows());
+        Mat mask = new Mat();
+        backgroundSubtractor.apply(roi, mask);
+        Mat output = new Mat();
+        roi.copyTo(output, mask);
+        //if(fps % 25 == 0) {
+        //if(count%25==0) {
+            laneDetector.process(output);
+        //    count = 0;
+        //} else {
+        //    count ++;
+        //}
+        laneDetector.drawLanes(roi);
+        //}
 
-        return inputFrame.rgba();
+        return input;
     }
 }
