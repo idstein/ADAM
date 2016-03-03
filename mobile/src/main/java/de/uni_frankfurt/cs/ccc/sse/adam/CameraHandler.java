@@ -8,6 +8,7 @@ import org.opencv.video.Video;
 public class CameraHandler implements CameraBridgeViewBase.CvCameraViewListener2 {
     BackgroundSubtractor backgroundSubtractor;
     LaneDetectProcessor laneDetector = new LaneDetectProcessor();
+    int fps = 0;
 
     public void onCameraViewStarted(int width, int height) {
         backgroundSubtractor = Video.createBackgroundSubtractorMOG2();
@@ -18,13 +19,14 @@ public class CameraHandler implements CameraBridgeViewBase.CvCameraViewListener2
 
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         Mat input = inputFrame.rgba();
-        Mat roi = input.rowRange((int) (input.rows() * 0.48), input.rows());
-        Mat mask = new Mat();
-        backgroundSubtractor.apply(roi, mask);
-        Mat output = new Mat();
-        roi.copyTo(output, mask);
-        laneDetector.process(output);
-        laneDetector.drawLanes(roi);
+        if (fps % 5 == 0) {
+            laneDetector.process(input);
+            fps = 0;
+        } else {
+            fps ++;
+        }
+        laneDetector.drawLanes(input);
+        laneDetector.drawVanishingPoints(input);
         return input;
     }
 }
