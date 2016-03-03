@@ -4,9 +4,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-/**
- * Created by idstein on 17/01/16.
- */
 public class FrameProcessor implements MatrixProcessor {
 
     private static final Size ksize = new Size(3, 3);

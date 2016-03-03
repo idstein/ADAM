@@ -9,6 +9,7 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.photo.Photo;
 import org.opencv.video.BackgroundSubtractor;
 import org.opencv.video.Video;
 import org.opencv.videoio.VideoCapture;
@@ -97,7 +98,8 @@ public class OpenCVTest {
         int height = (int) capture.get(Videoio.CAP_PROP_FRAME_HEIGHT);
         int frame_rate = (int) capture.get(Videoio.CAP_PROP_FPS);
         Imgshow win = new Imgshow("Day", width, height);
-        BackgroundSubtractor backgroundSubtractor = Video.createBackgroundSubtractorMOG2(frame_rate*60, 25, false);
+        BackgroundSubtractor backgroundSubtractor = //Video.createBackgroundSubtractorKNN(frame_rate, 200, false);
+         Video.createBackgroundSubtractorMOG2(frame_rate*90, 90, false);
         LaneDetectProcessor laneDetector = new LaneDetectProcessor();
         HorizonDetectProcessor horizonDetector = new HorizonDetectProcessor();
         int count = 0;
@@ -134,6 +136,7 @@ public class OpenCVTest {
         Imgshow win = new Imgshow("Day", width, height);
         LaneDetectProcessor laneDetector = new LaneDetectProcessor();
         HorizonDetectProcessor horizonDetector = new HorizonDetectProcessor();
+        BackgroundSubtractor backgroundSubtractor = Video.createBackgroundSubtractorMOG2(frame_rate*90, 30, false);
         int count = 0;
         int fps = 0;
         long currentTimeMillis = System.currentTimeMillis();
@@ -143,17 +146,24 @@ public class OpenCVTest {
         while (capture.read(inputImg) && fps < 5000) {
             // this should be the vanishing point, instead of an arbitrary bottom half of the image
             Mat roi = inputImg.rowRange((int) (inputImg.rows()*0.48), inputImg.rows());
+            Mat mask = new Mat();
+            backgroundSubtractor.apply(roi, mask);
+            Mat output = new Mat();
+            roi.copyTo(output, mask);
+
             Mat grayscale = new Mat();
-            Imgproc.cvtColor(inputImg, grayscale, Imgproc.COLOR_BGR2GRAY);
+            Imgproc.cvtColor(roi, grayscale, Imgproc.COLOR_BGR2GRAY);
+
             // Night mode
             Imgproc.equalizeHist(grayscale, grayscale);
 
-            Mat mask = new Mat();
+            //Imgproc.Canny(grayscale, grayscale, 200, 250, 3, false);
+            //Mat mask = new Mat();
             /*backgroundSubtractor.apply(roi, mask);
             Mat output = new Mat();
             roi.copyTo(output, mask);*/
             //if(fps % frame_rate == 0) {
-            inputImg = laneDetector.process(roi);
+            laneDetector.process(output);
             //}
             laneDetector.drawLanes(roi);
             win.showImage(grayscale);
