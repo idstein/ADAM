@@ -1,30 +1,50 @@
 language: android
-android: 
-  components: 
-    - build-tools-23.0.1
-    - android-23
-    - extra-android-m2repository
+sudo: false
+addons:
+  apt:
+    packages:
+    - build-essential
+    - cmake
+    - libgtk2.0-dev
+    - pkg-config
+    - libavcodec-dev
+    - libavformat-dev
+    - libswscale-dev
+    - libtbb2
+    - libtbb-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libtiff-dev
+    - libjasper-dev
+    - libdc1394-22-dev
+android:
+  components:
+  - build-tools-23.0.1
+  - android-23
+  - extra-android-m2repository
 before_cache:
-  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
 before_script:
-  # Install Android NDK 10e
-  # Note: There is now a difference between Target architecture and Platform architecture. What SHOULD they be?
-  - REVISION="10e"
-  - ARCH=$(uname -m)
-  - FILE="android-ndk-r${REVISION}-linux-${ARCH}.bin"
-  - wget http://dl.google.com/android/ndk/${FILE}
-  - chmod a+x ${FILE}
-  - ./${FILE} > /dev/null
-  - export ANDROID_NDK_HOME=$PWD/android-ndk-r${REVISION}
+- git clone https://github.com/Itseez/opencv.git --branch 3.1.0 libopencv
+- mkdir libopencv/build && cd libopencv/build
+- cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=$HOME/opencv .. && make && make install
+- cd ../..
+- REVISION="10
+- ARCH=$(uname -m)
+- FILE="android-ndk-r${REVISION}-linux-${ARCH}.bin"
+- wget http://dl.google.com/android/ndk/${FILE}
+- chmod a+x ${FILE}
+- ./${FILE} > /dev/null
+- export ANDROID_NDK_HOME=$PWD/android-ndk-r${REVISION}
 script: TERM=dumb gradle assemble test
 deploy:
   provider: releases
-    api_key: "****"
-    file: "/mobile/build/outputs/apk/mobile-debug.apk"
-    skip_cleanup: true
-    on:
-      tags: true
+  api_key:
+    secure: sl/lTpSDw0bbBOrA5IbAAjfrOoX6ifq6z8itFbZjDsxIjSOROKZAozVvJK0/BSNnDLiuphYJh+Lf1VzyTYaMn9qW7RPy/0dAfXLBWcDZ/mSp7EGA+s0gTCKrJQTFZiKkCTGC0BwYjobBAh9XDZL9cg8iwuCbCB4uwbX+QnKhTERpmq4WNM8b2/mkIb7OqOHYUYfrziSVsOf/1tce/q94Gdeass8AC03XSE8fdDyGzbU8YAm0VmUg7PBnxt1xV8FUBQosikMA9/2c54n7hrR6obTSOCvrlWp0N47aRFmHuJFGSZVBhVXdv1S2w89XnQEe5XgA/cmV+IpOuZmEkdLkFsS84sPlHYu4U27TEuHWJsmA5pcXbjG8rnzh2aIdXfeYQW8U6eKEmRitNsO2T7eg+1Yv+jn93xjHngf2vBDGEvWk8FK78X2C9pZTpESX/ZSrSC/XLiIJWrl/V6+jt59mM7E5aMug6gyYscUS65YB5Oz3eJm2fZGt7saEougwfQmzMIngxk5FCbDeFCrU7c3zXhPR2zKtMZYBY1VLYtjeRp3GzpP4j0nDP4yNa4jND/DlHZ6rqBhqRQHLa1x44sqOw7noirZYfn+xEvapIIxboGws3mM4crIyzim/nW7cMTgj/GT/T6O1Xwq4ZEJzU+n6Y+cMWPDHWRKcSTCaAeN9jYM=
+  file: mobile/build/outputs/apk/mobile-debug.apk
+  on:
+    repo: idstein/ADAM
