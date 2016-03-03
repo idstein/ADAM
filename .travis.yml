@@ -45,6 +45,6 @@ deploy:
   provider: releases
   api_key:
     secure: sl/lTpSDw0bbBOrA5IbAAjfrOoX6ifq6z8itFbZjDsxIjSOROKZAozVvJK0/BSNnDLiuphYJh+Lf1VzyTYaMn9qW7RPy/0dAfXLBWcDZ/mSp7EGA+s0gTCKrJQTFZiKkCTGC0BwYjobBAh9XDZL9cg8iwuCbCB4uwbX+QnKhTERpmq4WNM8b2/mkIb7OqOHYUYfrziSVsOf/1tce/q94Gdeass8AC03XSE8fdDyGzbU8YAm0VmUg7PBnxt1xV8FUBQosikMA9/2c54n7hrR6obTSOCvrlWp0N47aRFmHuJFGSZVBhVXdv1S2w89XnQEe5XgA/cmV+IpOuZmEkdLkFsS84sPlHYu4U27TEuHWJsmA5pcXbjG8rnzh2aIdXfeYQW8U6eKEmRitNsO2T7eg+1Yv+jn93xjHngf2vBDGEvWk8FK78X2C9pZTpESX/ZSrSC/XLiIJWrl/V6+jt59mM7E5aMug6gyYscUS65YB5Oz3eJm2fZGt7saEougwfQmzMIngxk5FCbDeFCrU7c3zXhPR2zKtMZYBY1VLYtjeRp3GzpP4j0nDP4yNa4jND/DlHZ6rqBhqRQHLa1x44sqOw7noirZYfn+xEvapIIxboGws3mM4crIyzim/nW7cMTgj/GT/T6O1Xwq4ZEJzU+n6Y+cMWPDHWRKcSTCaAeN9jYM=
-  file: mobile/build/outputs/apk/mobile-debug.apk
+  file: mobile/build/outputs/apk/ADAM-release.apk
   on:
     repo: idstein/ADAM
