@@ -22,6 +22,7 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -36,18 +37,15 @@ import static org.opencv.android.OpenCVLoader.initDebug;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class StreetViewActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2, IBaseGpsListener, SensorEventListener {
+public class StreetViewActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2{
     private static final String TAG = "StreetViewActivity";
     private Bitmap edgeBitmap;
     private CameraBridgeViewBase mDashcamView;
 
-    private Location mLastLocation;
+    private SpeedHandler speedHandler;
+    private RotationHandler rotationHandler;
 
-    private SensorManager senSensorManager;
-    private Sensor senGyro;
-    private double currOrientation;
 
-    private final double ROTATION_RATE_TRESHOLD = 5.00;
 
     /**
      * Load OpenCV Manager
@@ -82,29 +80,21 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
     private boolean isLeftHorizontal;
     private boolean isRightHorizontal;
 
-
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.dashcam);
-
         mDashcamView = (CameraBridgeViewBase) findViewById(R.id.dashcam_java_surface_view);
         mDashcamView.setCvCameraViewListener(this);
-
-
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        this.speedHandler = new SpeedHandler((TextView) findViewById(R.id.txtCurrentSpeed), locationManager);
+        this.rotationHandler = new RotationHandler(
+                (ImageView) this.findViewById(R.id.arrow_right),
+                (ImageView) this.findViewById(R.id.arrow_left),
+                (TextView) this.findViewById(R.id.txtCurrentOrientation),
+                (SensorManager) getSystemService(Context.SENSOR_SERVICE));
 
-        senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        senGyro = senSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-
-        senSensorManager.registerListener(this, senGyro, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
 
@@ -117,8 +107,6 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
     @Override
     protected void onResume() {
         super.onResume();
-        senSensorManager.registerListener(this, senGyro, SensorManager.SENSOR_DELAY_NORMAL);
-
         Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
         if (valueOf(System.getProperty("UNIT_TEST", Boolean.FALSE.toString()))) {
             loaderCallback.onManagerConnected(initDebug(false) ? SUCCESS : INIT_FAILED);
@@ -211,143 +199,5 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
 
         return inputFrame.rgba();
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.d("Location", "changed");
-        Log.d("Location", location.hasSpeed()+" hasSpeed");
-        Log.d("Location", location.getAccuracy() + " Accuracy");
-        Log.d("Location", location.getAltitude() + " Altitude");
-        Log.d("Location", location.hasBearing() + " hasBearing");
-        Log.d("Location", location.getLatitude() + " Lat");
-        Log.d("Location", location.getLongitude() + " Lng");
-        if(location != null)
-        {
-            CLocation myLocation = new CLocation(location);
-            this.updateSpeed(myLocation);
-        }
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    @Override
-    public void onGpsStatusChanged(int event) {
-    }
-
-    private void updateSpeed(CLocation pCurrentLocation) {
-        //calcul manually speed
-        double speed = 0;
-        if (this.mLastLocation != null){
-
-              double dist = distance_on_geoid(mLastLocation.getLatitude(), mLastLocation.getLongitude(), pCurrentLocation.getLatitude(), pCurrentLocation.getLongitude());
-              double time_s = (mLastLocation.getTime() - pCurrentLocation.getTime()) / 1000.0;
-              double speed_mps = dist / time_s;
-              speed = Math.round(Math.abs((speed_mps * 3600.0) / 1000.0) * 100.0) / 100.0;
-        }
-
-
-        this.mLastLocation = pCurrentLocation;
-
-        String strCurrentSpeed = speed+"";
-        String strUnits = "km/hour";
-
-        TextView txtCurrentSpeed = (TextView) this.findViewById(R.id.txtCurrentSpeed);
-        txtCurrentSpeed.setText(strCurrentSpeed + " " + strUnits);
-    }
-
-    double distance_on_geoid(double lat1, double lon1, double lat2, double lon2) {
-        double M_PI = 3.14159265359;
-        // Convert degrees to radians
-        lat1 = lat1 * M_PI / 180.0;
-        lon1 = lon1 * M_PI / 180.0;
-
-        lat2 = lat2 * M_PI / 180.0;
-        lon2 = lon2 * M_PI / 180.0;
-
-        // radius of earth in metres
-        double r = 6378100;
-
-        // P
-        double rho1 = r * Math.cos(lat1);
-        double z1 = r * Math.sin(lat1);
-        double x1 = rho1 * Math.cos(lon1);
-        double y1 = rho1 * Math.sin(lon1);
-
-        // Q
-        double rho2 = r * Math.cos(lat2);
-        double z2 = r * Math.sin(lat2);
-        double x2 = rho2 * Math.cos(lon2);
-        double y2 = rho2 * Math.sin(lon2);
-
-        // Dot product
-        double dot = (x1 * x2 + y1 * y2 + z1 * z2);
-        double cos_theta = dot / (r * r);
-
-        double theta = Math.acos(cos_theta);
-
-        // Distance in Metres
-        return r * theta;
-    }
-    private ImageView arrow_left = (ImageView) this.findViewById(R.id.arrow_left);
-    private ImageView arrow_right = (ImageView) this.findViewById(R.id.arrow_right);
-    private TextView txtCurrentOrientation = (TextView) this.findViewById(R.id.txtCurrentOrientation);
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        switch (event.sensor.getType()){
-            case Sensor.TYPE_GYROSCOPE:
-                currOrientation = Math.toDegrees(event.values[1]);
-                double orientation = Math.round((currOrientation)* 100.0) / 100.0;
-                setRotationText(orientation);
-
-                if(isHigherThanTreshold(orientation)){
-                    signalRotation(orientation);
-                }else{
-                    hideAllSignals();
-                }
-            default:
-                return;
-        }
-    }
-
-
-    private void setRotationText(double rate){
-
-        txtCurrentOrientation.setText("Orientation: "+rate);
-    }
-
-    private boolean isHigherThanTreshold(double rate){
-        return Math.abs(rate) > ROTATION_RATE_TRESHOLD;
-    }
-
-    private void signalRotation(double orientation){
-        if(orientation < 0.00){
-            arrow_right.setVisibility(View.INVISIBLE);
-            arrow_left.setVisibility(View.VISIBLE);
-        }else{
-            arrow_left.setVisibility(View.INVISIBLE);
-            arrow_right.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void hideAllSignals(){
-        arrow_left.setVisibility(View.INVISIBLE);
-        arrow_right.setVisibility(View.INVISIBLE);
-    }
-
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 }
