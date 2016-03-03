@@ -4,6 +4,8 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -62,7 +64,7 @@ public class OpenCVTest {
         Mat testImg = Imgcodecs.imread(OpenCVTest.class.getResource("/road.png").getFile(), Imgcodecs.CV_LOAD_IMAGE_COLOR);
         LaneDetectProcessor laneDetector = new LaneDetectProcessor();
         Imgshow.show(laneDetector.process(testImg));
-        assertThat(laneDetector.left_lane,CoreMatchers.notNullValue());
+        assertThat(laneDetector.left_lane, CoreMatchers.notNullValue());
         assertThat(laneDetector.right_lane,CoreMatchers.notNullValue());
         Thread.sleep(2000);
     }
@@ -77,13 +79,9 @@ public class OpenCVTest {
         int frame_rate = (int) capture.get(Videoio.CAP_PROP_FPS);
         Imgshow win = new Imgshow("Day", width, height);
         LaneDetectProcessor laneDetector = new LaneDetectProcessor();
-        HorizonDetectProcessor horizonDetector = new HorizonDetectProcessor();
-        int count = 0;
         int fps = 0;
         long currentTimeMillis = System.currentTimeMillis();
         Mat inputImg = new Mat();
-        Mat lanes = new Mat();
-        Random rng = new Random();
         while (capture.read(inputImg) && fps < 5000) {
             if(fps % 5 == 0) {
                 if (BuildConfig.DEBUG) {
@@ -142,5 +140,27 @@ public class OpenCVTest {
         Imgshow win = new Imgshow("Day", testImg.cols(), testImg.rows());
         win.showImage(testImg);
         win.showImage(horizonDetector.process(testImg));
+    }
+
+    @Test
+    public void trackVehicles() throws Exception {
+        VideoCapture capture = new VideoCapture(OpenCVTest.class.getResource("/day.mp4").getFile());
+        assertThat(capture.isOpened(), CoreMatchers.equalTo(true));
+        int width = (int) capture.get(Videoio.CAP_PROP_FRAME_WIDTH);
+        int height = (int) capture.get(Videoio.CAP_PROP_FRAME_HEIGHT);
+        int frame_rate = (int) capture.get(Videoio.CAP_PROP_FPS);
+        Imgshow win = new Imgshow("Day", width, height);
+        VehicleTrackingProcessor vehicleClassifier = new VehicleTrackingProcessor();
+        int fps = 0;
+        long currentTimeMillis = System.currentTimeMillis();
+        Mat inputImg = new Mat();
+        while (capture.read(inputImg) && fps < 5000) {
+            vehicleClassifier.process(inputImg);
+            for(Rect bb : vehicleClassifier.bbVehicles.toArray()) {
+             Imgproc.rectangle(inputImg, bb.tl(), bb.br(), new Scalar(255,0, 0));
+            }
+            win.showImage(inputImg);
+            fps++;
+        }
     }
 }

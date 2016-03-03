@@ -8,4 +8,6 @@ import org.opencv.core.Mat;
 public interface MatrixProcessor {
 
     Mat process(Mat input);
+
+    void visualize(Mat input);
 }

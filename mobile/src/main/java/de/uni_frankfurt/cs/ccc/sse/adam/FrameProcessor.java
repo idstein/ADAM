@@ -20,4 +20,9 @@ public class FrameProcessor implements MatrixProcessor {
         Imgproc.erode(out, in, new Mat());
         return in;
     }
+
+    @Override
+    public void visualize(Mat input) {
+
+    }
 }

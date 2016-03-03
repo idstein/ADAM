@@ -116,7 +116,13 @@ public class LaneDetectProcessor implements MatrixProcessor {
         return grayscale;
     }
 
-    public void drawLanes(Mat input) {
+    @Override
+    public void visualize(Mat input) {
+        drawLanes(input);
+        drawVanishingPoints(input);
+    }
+
+    void drawLanes(Mat input) {
         final Rect rect = new Rect(new Point(0, vp_candidate.y), input.size());
         if (BuildConfig.DEBUG)
             for (Line line : lines) {
@@ -141,7 +147,7 @@ public class LaneDetectProcessor implements MatrixProcessor {
         }
     }
 
-    public void drawVanishingPoints(Mat input) {
+    void drawVanishingPoints(Mat input) {
         if (BuildConfig.DEBUG)
             for (Point vp : vanishingPointCandidates) {
                 Imgproc.drawMarker(input, vp, new Scalar(100, 0, 0));
