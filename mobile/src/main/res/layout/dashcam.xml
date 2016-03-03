@@ -17,7 +17,7 @@
         android:id="@+id/txtCurrentOrientation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="asdasdlkasjd"
+        android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_gravity="right|top" />
 
@@ -28,4 +28,17 @@
         android:text="000.0 km/hour"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_gravity="left|top" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/arrow_right"
+        android:src="@drawable/arrow_right"
+        android:layout_gravity="right|center_vertical" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/arrow_left"
+        android:src="@drawable/arrow_left"
+        android:layout_gravity="left|center_vertical" />
 </FrameLayout>

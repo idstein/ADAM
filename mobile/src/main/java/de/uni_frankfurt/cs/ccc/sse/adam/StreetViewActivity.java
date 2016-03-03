@@ -9,8 +9,11 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -43,6 +46,8 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
     private SensorManager senSensorManager;
     private Sensor senGyro;
     private double currOrientation;
+
+    private final double ROTATION_RATE_TRESHOLD = 5.00;
 
     /**
      * Load OpenCV Manager
@@ -294,20 +299,52 @@ public class StreetViewActivity extends Activity implements CameraBridgeViewBase
         // Distance in Metres
         return r * theta;
     }
-
+    private ImageView arrow_left = (ImageView) this.findViewById(R.id.arrow_left);
+    private ImageView arrow_right = (ImageView) this.findViewById(R.id.arrow_right);
+    private TextView txtCurrentOrientation = (TextView) this.findViewById(R.id.txtCurrentOrientation);
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Log.d("SENSOR", event.sensor.getStringType());
         switch (event.sensor.getType()){
             case Sensor.TYPE_GYROSCOPE:
                 currOrientation = Math.toDegrees(event.values[1]);
-                TextView txtCurrentOrientation = (TextView) this.findViewById(R.id.txtCurrentOrientation);
                 double orientation = Math.round((currOrientation)* 100.0) / 100.0;
-                txtCurrentOrientation.setText("Orientation: "+orientation);
+                setRotationText(orientation);
+
+                if(isHigherThanTreshold(orientation)){
+                    signalRotation(orientation);
+                }else{
+                    hideAllSignals();
+                }
             default:
                 return;
         }
     }
+
+
+    private void setRotationText(double rate){
+
+        txtCurrentOrientation.setText("Orientation: "+rate);
+    }
+
+    private boolean isHigherThanTreshold(double rate){
+        return Math.abs(rate) > ROTATION_RATE_TRESHOLD;
+    }
+
+    private void signalRotation(double orientation){
+        if(orientation < 0.00){
+            arrow_right.setVisibility(View.INVISIBLE);
+            arrow_left.setVisibility(View.VISIBLE);
+        }else{
+            arrow_left.setVisibility(View.INVISIBLE);
+            arrow_right.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideAllSignals(){
+        arrow_left.setVisibility(View.INVISIBLE);
+        arrow_right.setVisibility(View.INVISIBLE);
+    }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
