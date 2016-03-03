@@ -19,7 +19,7 @@ addons:
     - libdc1394-22-dev
 android:
   components:
-        - build-tools-23.0.1
+        - build-tools-23.0.2
         - android-23
         - extra-android-m2repository
 before_cache:
@@ -28,11 +28,9 @@ cache:
     directories:
         - $HOME/.gradle/caches/
         - $HOME/.gradle/wrapper/
+        - $HOME/opencv
 before_script:
-    - git clone https://github.com/Itseez/opencv.git --branch 3.1.0 libopencv
-    - mkdir libopencv/build && cd libopencv/build
-    - cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=$HOME/opencv .. && make && make install
-    - cd ../..
+    - bash get_opencv.sh
     - REVISION="10e"
     - ARCH=$(uname -m)
     - FILE="android-ndk-r${REVISION}-linux-${ARCH}.bin"
