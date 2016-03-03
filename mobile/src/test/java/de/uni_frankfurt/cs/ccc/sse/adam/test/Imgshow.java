@@ -1,4 +1,4 @@
-package de.uni_frankfurt.cs.ccc.sse.adam;/*
+package de.uni_frankfurt.cs.ccc.sse.adam.test;/*
  * Author: ATUL
  * Thanks to Daniel Baggio , Jan Monterrubio and sutr90 for improvements
  * This code can be used as an alternative to imshow of OpenCV for JAVA-OpenCv 
@@ -15,6 +15,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
@@ -23,25 +24,20 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
-//import java.io.ByteArrayInputStream;
-//import java.io.InputStream;
-//import javax.imageio.ImageIO;
-//import javax.swing.plaf.ButtonUI;
-
 public class Imgshow {
 
     public JFrame Window;
     private ImageIcon image;
     private JLabel label;
-    // private MatOfByte matOfByte;
     private Boolean SizeCustom;
     private int Height, Width;
 
     public Imgshow(String title) {
+        if(GraphicsEnvironment.isHeadless())
+            return;
         Window = new JFrame();
         image = new ImageIcon();
         label = new JLabel();
-        // matOfByte = new MatOfByte();
         label.setIcon(image);
         Window.getContentPane().add(label);
         Window.setResizable(false);
@@ -54,6 +50,8 @@ public class Imgshow {
         SizeCustom = true;
         Height = height;
         Width = width;
+        if(GraphicsEnvironment.isHeadless())
+            return;
 
         Window = new JFrame();
         image = new ImageIcon();
@@ -68,6 +66,8 @@ public class Imgshow {
     }
 
     public void showImage(Mat img) {
+        if(GraphicsEnvironment.isHeadless())
+            return;
         if (SizeCustom) {
             Imgproc.resize(img, img, new Size(Height, Width));
         }
@@ -90,7 +90,7 @@ public class Imgshow {
     // CREDITS TO DANIEL: http://danielbaggio.blogspot.com.br/ for the improved
     // version !
 
-    public BufferedImage toBufferedImage(Mat m) {
+    BufferedImage toBufferedImage(Mat m) {
         int type = BufferedImage.TYPE_BYTE_GRAY;
         if (m.channels() > 1) {
             type = BufferedImage.TYPE_3BYTE_BGR;
@@ -132,6 +132,8 @@ public class Imgshow {
      *            <code>false</code> otherwise
      */
     public void setResizable(boolean resizable) {
+        if(GraphicsEnvironment.isHeadless())
+            return;
         Window.setResizable(resizable);
     }
 
@@ -244,6 +246,8 @@ public class Imgshow {
      */
     public static void show(Mat mat, Dimension frameSize, String frameTitle,
                             boolean resizable, int closeOperation) {
+        if(GraphicsEnvironment.isHeadless())
+            return;
         Imgshow frame = new Imgshow(frameTitle, frameSize.height, frameSize.width);
         frame.setResizable(resizable);
 

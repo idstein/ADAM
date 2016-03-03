@@ -40,7 +40,7 @@ before_script:
     - chmod a+x ${FILE}
     - ./${FILE} > /dev/null
     - export ANDROID_NDK_HOME=$PWD/android-ndk-r${REVISION}
-script: TERM=dumb gradle assemble test
+script: TERM=dumb ./gradlew assemble test -Djava.library.path="$HOME/opencv/share/OpenCV/java"
 deploy:
   provider: releases
   api_key:

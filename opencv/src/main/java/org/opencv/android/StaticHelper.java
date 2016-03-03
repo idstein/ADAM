@@ -1,9 +1,10 @@
 package org.opencv.android;
 
+import android.util.Log;
+
 import org.opencv.core.Core;
 
 import java.util.StringTokenizer;
-import android.util.Log;
 
 class StaticHelper {
 
@@ -92,7 +93,7 @@ class StaticHelper {
         else
         {
             // If dependencies list is not defined or empty.
-            result &= loadLibrary("libopencv_java310.so");
+            result &= loadLibrary("opencv_java310");
         }
 
         return result;

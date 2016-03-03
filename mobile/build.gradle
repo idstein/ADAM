@@ -14,7 +14,8 @@ android {
     testOptions {
         unitTests.all {
             // All the usual Gradle options.
-            jvmArgs '-DUNIT_TEST=true'
+            jvmArgs '-XshowSettings:properties'
+            systemProperties(System.getProperties())
         }
     }
 

@@ -18,7 +18,7 @@ class OpenCVLoaderCallback extends BaseLoaderCallback {
         switch (status) {
             case LoaderCallbackInterface.SUCCESS: {
                 Log.i("OpenCVLoaderCallback", "OpenCV library loaded successfully");
-                streetViewActivity.enableOpenCV();
+                streetViewActivity.onOpenCVLoaded();
             }
             break;
             default: {
