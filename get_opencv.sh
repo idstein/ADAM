@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 # check to see if protobuf folder is empty
-if [ ! -d "$HOME/opencv" ]; then
+if [ ! -d "$HOME/opencv/build" ]; then
   git clone https://github.com/Itseez/opencv.git --branch 3.1.0 libopencv
   mkdir libopencv/build
   cd libopencv/build
