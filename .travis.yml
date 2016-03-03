@@ -20,13 +20,9 @@ install:
 - sudo apt-get install -y python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev
   libtiff-dev libjasper-dev libdc1394-22-dev
 before_script:
-- git clone https://github.com/Itseez/opencv.git --branch 3.1.0
-- cd opencv
-- mkdir build
-- cd build
-- cmake -D CMAKE_BUILD_TYPE=RELEASE ..
-- make -j8
-- sudo make -j8 install
+- git clone https://github.com/Itseez/opencv.git --branch 3.1.0 libopencv
+- mkdir libopencv/build && cd libopencv/build
+- cmake -D CMAKE_BUILD_TYPE=RELEASE .. && make -j8 && sudo make -j8 install
 - cd ../..
 - REVISION="10
 - ARCH=$(uname -m)
