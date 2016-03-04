@@ -1,5 +1,6 @@
 package de.uni_frankfurt.cs.ccc.sse.adam;
 
+import org.opencv.core.CvException;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
@@ -16,11 +17,16 @@ public class VehicleTrackingProcessor implements MatrixProcessor {
         bbVehicles = new MatOfRect();
     }
 
-    final MatOfRect bbVehicles;
+    MatOfRect bbVehicles;
 
     @Override
     public Mat process(Mat input) {
-        classifier.detectMultiScale(input, bbVehicles);
+        bbVehicles = new MatOfRect();
+        try {
+            classifier.detectMultiScale(input, bbVehicles);
+        } catch(CvException e) {
+            // noop
+        }
         return input;
     }
 
