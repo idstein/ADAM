@@ -30,6 +30,7 @@ cache:
         - $HOME/.gradle/wrapper/
         - $HOME/opencv
 before_script:
+    - bash git-lfs.sh
     - bash get_opencv.sh
     - REVISION="10e"
     - ARCH=$(uname -m)
